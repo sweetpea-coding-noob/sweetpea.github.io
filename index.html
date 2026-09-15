@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> A little nothing for your birthday </title>
+    <style>
+        :root { color-scheme: light; }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: clamp(12px, 4vw, 40px);
+            overflow-x: hidden;
+            background: radial-gradient(circle at top, #efd9eb 0%, #deaac9 35%, #d38db9 100%);
+            color: #5b176f;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .floating-hearts {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .heart-particle {
+            position: absolute;
+            bottom: -10vh;
+            left: 0;
+            opacity: 0;
+            user-select: none;
+            animation: floatUp linear infinite;
+            text-shadow: 0 0 10px rgba(255,255,255,.45);
+        }
+        @keyframes floatUp {
+            0% { transform: translate3d(0,0,0) scale(.7) rotate(0deg); opacity: 0; }
+            15% { opacity: .7; }
+            100% { transform: translate3d(var(--drift-x),-118vh,0) scale(1.35) rotate(var(--spin)); opacity: 0; }
+        }
+        .letter-container {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 680px);
+            min-width: 0;
+            padding: clamp(20px, 5vw, 40px);
+            border: 2px dashed #ec629a;
+            border-radius: 20px;
+            background: rgba(239,211,228,0.8);
+            box-shadow: 0 10px 20px rgba(225,192,193,.55);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(24px) scale(.98);
+            transition: opacity .9s ease, transform .9s ease;
+        }
+        .letter-container.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+        .reveal { opacity: 0; transform: translateY(18px) rotate(1deg); filter: blur(4px); transition: opacity .8s ease, transform .8s ease, filter .8s ease; }
+        .reveal.is-visible { opacity: 1; transform: translateY(0) rotate(0); filter: blur(0); }
+        .heart-icon {
+            display: block;
+            margin: 0 auto 16px;
+            border: 0;
+            background: transparent;
+            color: crimson;
+            cursor: not-allowed;
+            font-size: clamp(38px, 10vw, 50px);
+            animation: heartPulse 1.8s ease-in-out infinite;
+        }
+        @keyframes heartPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+        h1 { margin: 0 0 10px; color: #ff0080; font-size: clamp(2rem, 8vw, 3.125rem); line-height: 1.1; }
+        h2 { margin: 0 auto 20px; color: #9b7ce9; font-size: clamp(1.25rem, 4.5vw, 1.875rem); line-height: 1.25; }
+        .letter-text, .citation, .qotation, .friendship-quiz-intro { font-size: clamp(1rem, 2.5vw, 1.35rem); line-height: 1.45; }
+        .letter-text { margin: 0 0 15px; color: rgb(190, 48, 125); text-indent: 0; }
+        .citation { color: #6a0eac; }
+        .qotation { color: #765cc2; }
+        .signature { margin-top: 30px; color: #fd0061; text-align: right; font-size: clamp(1rem, 2.5vw, 1.35rem); font-style: italic; font-weight: bold; }
+        .carousel { width: 100%; margin: 24px auto 0; overflow: hidden; border-radius: 12px; padding: .5em 0; }
+        .carousel-track { display: flex; width: max-content; animation: scroll 18s linear infinite; }
+        .group { display: flex; flex-shrink: 0; align-items: center; justify-content: center; gap: .75em; padding-right: .75em; }
+        .card { display: flex; flex: 0 0 5.5em; height: 3em; align-items: center; justify-content: center; border-radius: 10px; background: rgba(239,211,228,0); font-size: clamp(1.8rem, 7vw, 2.7rem); line-height: 1; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .note { margin-top: 10px; color: #000; font-size: 10px; font-style: italic; }
+        .celebrate-link { margin-top: 20px; text-align: center; }
+        .friendship-quiz { margin-top: 34px; padding: clamp(18px, 4vw, 28px) clamp(14px, 4vw, 22px) 24px; border: 2px solid #ff0166; border-radius: 12px; }
+        .friendship-quiz h2 { margin: 0 0 8px; color: #9e65e9cc; font-size: clamp(1.6rem, 6vw, 2.2rem); }
+        .friendship-quiz-kicker, .question-count { margin: 0 0 8px; color: #ff4dd0; font-size: .95rem; font-weight: 650; font-style: oblique; }
+        .friendship-quiz-intro { margin: 8px 0 24px; color: #6a0eac; }
+        fieldset { display: grid; gap: 10px; margin: 0; padding: 0; border: 0; text-align: left; }
+        legend { margin: 0 0 8px; color: #5b176f; font-size: 1.15rem; font-weight: 700; }
+        fieldset label { display: flex; min-width: 0; gap: 10px; align-items: flex-start; padding: 10px 14px; border-radius: 999px; background: #ff5dc4; color: #fff; font-weight: 700; cursor: pointer; transition: background-color 160ms ease, transform 160ms ease; }
+        fieldset label:hover { background: #ff9ec5; color: #844c95; transform: translateY(-2px); }
+        .friendship-quiz button { margin-top: 16px; padding: 10px 18px; border: 0; border-radius: 999px; background: #ff5dc4; color: #fff8fd; cursor: pointer; font: inherit; }
+        .friendship-quiz button:hover { background-color: #ff9ec5; color: #121111; font-weight: bold;}
+        .friendship-quiz button:focus-visible { outline: 3px solid #ff0004; outline-offset: 3px; }
+        .friendship-quiz-result img { display: block; width: 128px; height: 128px; margin: 0 auto 12px; animation: prize-float 2.1s ease-in-out infinite; filter: drop-shadow(0 10px 18px rgba(162,92,255,.35)); }
+        .friendship-quiz-result h3 { margin: 0; color: #5b176f; }
+        @keyframes prize-float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.04); } }
+        .invisible-button { position: fixed; top: 12px; left: 12px; z-index: 1000; padding: 8px 12px; border: 2px solid #9b7ce9; border-radius: 999px; opacity: .1; background: #efd3e4; color: #6a0eac; font: inherit; cursor: not-allowed; }
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .letter-container { border-radius: 14px; }
+            .letter-text, .citation, .qotation { font-size: 1rem; }
+            fieldset label { border-radius: 12px; }
+            .friendship-quiz { margin-top: 24px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
+    </style>
+    <style>
+        /*i kinda think this is too much tho*/
+        .friendship-quiz h2 { 
+            margin: 0 0 8px; 
+            font-size: clamp(1.6rem, 4vw, 2.2rem); 
+            color: #9e65e9cc
+        }
+        img{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<button id="reveal-button" class="invisible-button" aria-label="hidden message">
+    click?
+</button>
+    <div class="floating-hearts" id="floating-hearts" aria-hidden="true"></div>
+    <div class="letter-container">
+        <div class="heart-icon reveal">🤍</div>
+        <h1 class="reveal">Dear You,</h1>
+        <h2 class="reveal">I'm no good with writing letters, nor coding, but I tried anyway.</h2>
+        <p class="letter-text reveal">
+            I am writing this letter to you, for your birthday, since you said: <br>
+        <div class="citation reveal"> 
+            <p><q>I've never really did anything on my bday</q></p> </div>
+
+        <p class="letter-text reveal">
+            So I thought to myself:<br>
+        <div class="qotation reveal">
+            <q>Maybe I should do a little surprise for him</q> </div>
+        
+            <p class="letter-text reveal">
+            Mostly because it makes me happy to give my best on a hobby that I never fully understood (yet). <br>
+            So, I want to show how much I care without you thinking that I do not care about you.<br>
+            Not only should you keep in your heart all the good memories we have shared, but don't forget to slow down form time to time and enjoy the present moment.<br>
+            And keep in mind that I will always be there for you, no matter what.<br>
+            I wish you a wonderful, and amazing birthday.<br>
+            I pray and hope that our friendship will last as long as I am alive because...<br>
+        <div class="citation reveal">
+            <p><q>You are still a precious friend of mine and I hope this friendship will remain till death</q></p>
+        <div class="letter-text reveal"><p>..too</p></div>
+        <div class="letter-text reveal">
+            <p>By no means should you forget what friends are made for:</p>
+        </div>
+        <div class="citation reveal" style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-weight: bold; font-style: oblique; color: rgb(67, 76, 255);">
+            <q>Carry each other's burden, and in this way you will fulfill the law of Christ</q>
+            <p>Galatians 6:2</p>
+        </div>
+        <p class="signature reveal"> With love,<br> Your dearest friend,<br>Malala</p>
+        <div class="carousel reveal">
+            <div class="carousel-track">
+                <div class="group">
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                </div>
+                <div aria-hidden="true" class="group">
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                    <div class="card">🎀🎀🎀</div>
+                </div>
+            </div>
+        </div>
+    <div class="note reveal">
+        <p>Note: I know that this letter is not perfect, but I really hope will enjoy this little surprise. <br>
+            I wish you all the best and I hope that you will have a great year ahead. <br>
+            Happy Birthday, again! <br>
+        </p>
+    </div>
+    <div class="celebrate-link reveal">
+        <a href="https://youtu.be/BBJa32lCaaY?si=OQC7jNBbgyOo9_95" target="blank">Celebrate (?)</a>
+    </div>
+    <section class="friendship-quiz" aria-labelledby="friendship-quiz-title">
+        <p class="friendship-quiz-kicker"> One last thing </p>
+        <h2 id="friendship-quiz-title"> A little questionnaire</h2>
+        <p class="friendship-quiz-intro"> Answer honestly the following questions, please! </p>
+        <form id="friendship-form"> 
+            <div class="friendship-quiz-question is-active" data-question="1">
+                <p class="question-count"> Question 1 of 4 </p>
+                <fieldset>
+                    <legend> How long have we been friends? </legend>
+                        <label><input type="radio" name="duration" value="a"> 3 days </input></label>
+                        <label><input type="radio" name="duration" value="b"> 7 months </input></label>
+                        <label><input type="radio" name="duration" value="c"> We've known eachother since birth. Fym? </input></label>
+                </fieldset>
+            </div>
+            <div class="friendship-quiz-question" data-question="2" hidden>
+                <p class="question-count"> Question 2 of 4 </p>
+                <fieldset>
+                    <legend> What makes a friendship truly special? </legend>
+                        <label><input type="radio" name="great-friendship" value="a"> Trust </input></label>
+                        <label><input type="radio" name="great-friendship" value="b"> Laughter </input></label>
+                        <label><input type="radio" name="great-friendship" value="c"> Support </input></label>
+                </fieldset>
+            </div>
+            <div class="friendship-quiz-question" data-question="3" hidden> 
+                <p class="question-count"> Question 3 of 4 </p>
+                <fieldset> 
+                    <legend> What should we do next? </legend>
+                        <label><input type="radio" name="next-adventure" value="a"> Go on an adventure </input></label>
+                        <label><input type="radio" name="next-adventure" value="b"> Find the G spot </input></label>
+                        <label><input type="radio" name="next-adventure" value="c"> Whatever, as long as we go together </input></label>
+                </fieldset>
+            </div>
+            <div class="friendship-quiz-question" data-question="4" hidden>
+                <p class="question-count"> Question 4 of 4 </p>
+                <fieldset>
+                    <legend> Are you ready to make more memories? </legend>
+                        <label><input type="radio" name="ready-for-more" value="a"> Yes, absolutely </input></label>
+                        <label><input type="radio" name="ready-for-more" value="b"> Always</input></label>
+                        <label><input type="radio" name="ready-for-more" value="c"> Is that even a question? </input></label>
+                </fieldset>
+            </div>
+            <button class="friendship-quiz-button" type="button" id="next-button"> Next <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="friendship-quiz-result" id="friendship-quiz-result" aria-live="polite" hidden>
+            <img src="golden-cuffs-removebg-preview.png" alt="golden-cuffs" style="width: 128px;height:128px;">
+            <h3>Congratulations! You are stuck with me now! 💟</h3>
+            <p>Whatever answers you got, I am keeping you in my life. No take backsies! </p>
+            <button class="friendship-quiz-reset" type="button">Take it again <span aria-hidden="true">↻</span></button>
+        </div>
+    </section>        
+    </div> 
+    <div id="hidden-message" hidden style="font-weight:normal;font-size:medium;justify-self: unset;"> 
+        -- /*why do I feel like this is too much and that I am freaking bothering you with my uncomfortableness (is that even a word)*/ //hidden message// <br>
+        <p>I had a full on conversation with myself, in a Google Doc, and added it on the Duck.ai since I am too much of a pussy to talk about it face to face;<br>
+            Long story short, I may have developped romantic feelings for you and this probably bloomed out of confusion. So, the AI told me to brace myself and talk about it if I cared about you and our friendship.<br>
+            S**cidal mission, since I am easily anxious when it comes to our friendship and I cannot read your thoughts, bruh.
+            My point is, unless you clarify it, I will suffer into mixed signals until the end of my days. <br>
+            So if you see this hidden message-not so hidden message-, make it clear to me, because it does cost my mental health and I cannot afford a therapist, lol. <br> 
+            In any case, I double down on what I said earlier, I care about you, and I will probably get heartbroken if we never ever speak to each other again.
+        </p>
+    </div>
+<script> 
+    const button = document.getElementById('reveal-button');
+    const message = document.getElementById('hidden-message');
+
+    button.addEventListener('click',() => {
+        message.hidden = !message.hidden;
+
+    });
+
+    const revealElements = document.querySelectorAll('.reveal');
+    const container = document.querySelector('.letter-container');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.18 });
+
+    revealElements.forEach((element) => revealObserver.observe(element));
+
+    if (container) {
+        requestAnimationFrame(() => {
+            container.classList.add('is-visible');
+        });
+    }
+
+    const heartsContainer = document.getElementById('floating-hearts');
+    const heartTypes = ['❤', '♥', '♡', '💗', '💖','<3'];
+
+    if (heartsContainer) {
+        for (let i = 0; i < 26; i++) {
+            const heart = document.createElement('span');
+            heart.className = 'heart-particle';
+            heart.textContent = heartTypes[i % heartTypes.length];
+
+            const size = 14 + Math.random() * 26;
+            const left = Math.random() * 100;
+            const drift = (Math.random() - 0.5) * 220;
+            const duration = 10 + Math.random() * 18;
+            const delay = -Math.random() * 20;
+            const opacity = 0.25 + Math.random() * 0.55;
+
+            heart.style.left = `${left}%`;
+            heart.style.fontSize = `${size}px`;
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.animationDelay = `${delay}s`;
+            heart.style.opacity = opacity;
+            heart.style.setProperty('--drift-x', `${drift}px`);
+            heart.style.setProperty('--spin', `${(Math.random() - 0.5) * 180}deg`);
+
+            heartsContainer.appendChild(heart);
+        }
+    }
+</script>
+</body>
+<script>
+    const questions = Array.from(document.querySelectorAll('.friendship-quiz-question'));
+    const nextButton = document.getElementById('next-button');
+    const form = document.getElementById('friendship-form');
+    const resultBox = document.getElementById('friendship-quiz-result');
+    const resetButton = resultBox.querySelector('.friendship-quiz-reset');
+
+    let currentQuestionIndex = 0;
+
+    function showQuestion(index) {
+        questions.forEach((question, questionIndex) => {
+            const isActive = questionIndex === index;
+            question.hidden = !isActive;
+            question.classList.toggle('is-active', isActive);
+        });
+
+        const isLastQuestion = index === questions.length - 1;
+        nextButton.innerHTML = isLastQuestion
+            ? 'Finish <span aria-hidden="true">✓</span>'
+            : 'Next <span aria-hidden="true">→</span>';
+    }
+
+    function validateCurrentQuestion() {
+        const currentQuestion = questions[currentQuestionIndex];
+        const currentAnswer = currentQuestion.querySelector('input[type="radio"]:checked');
+
+        if (!currentAnswer) {
+            currentQuestion.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            currentQuestion.style.outline = '2px solid #ff2a6d';
+            currentQuestion.style.borderRadius = '10px';
+            return false;
+        }
+
+        currentQuestion.style.outline = 'none';
+        return true;
+    }
+
+    nextButton.addEventListener('click', () => {
+        if (!validateCurrentQuestion()) {
+            return;
+        }
+
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex += 1;
+            showQuestion(currentQuestionIndex);
+            return;
+        }
+
+        form.hidden = true;
+        resultBox.hidden = false;
+    });
+
+    resetButton.addEventListener('click', () => {
+        currentQuestionIndex = 0;
+        form.hidden = false;
+        resultBox.hidden = true;
+        questions.forEach((question) => {
+            question.hidden = question.dataset.question !== '1';
+            question.classList.toggle('is-active', question.dataset.question === '1');
+            question.style.outline = 'none';
+            question.querySelectorAll('input[type="radio"]').forEach((radio) => {
+                radio.checked = false;
+            });
+        });
+        showQuestion(0);
+    });
+
+    showQuestion(0);
+</script>
+</html>
