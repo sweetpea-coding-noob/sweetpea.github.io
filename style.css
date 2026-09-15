@@ -1,0 +1,352 @@
+/* Style background page */
+body{
+    position: relative;
+    background: radial-gradient(circle at top, #efd9eb 0%, #deaac9 35%, #d38db9 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-display: auto;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.floating-hearts {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.heart-particle {
+    position: absolute;
+    bottom: -10vh;
+    left: 0;
+    opacity: 0;
+    user-select: none;
+    animation: floatUp linear infinite;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate3d(0, 0, 0) scale(0.7) rotate(0deg);
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate3d(var(--drift-x), -118vh, 0) scale(1.35) rotate(var(--spin));
+        opacity: 0;
+    }
+}
+
+/* The letter container card*/
+.letter-container{
+    position: relative;
+    opacity: 0.1;
+    z-index: 1;
+    background: rgba(239, 211, 228, 0.75);
+    max-width: 600px;
+    width: 100%;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(225, 192, 193, 0.548);
+    border: 2px dashed#ec629a;
+    text-align: center;
+    transform: translateY(24px) scale(0.98);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.letter-container.is-visible {
+    opacity: 0.75;
+    transform: translateY(0) scale(1);
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(18px) rotate(1deg);
+    filter: blur(4px);
+    transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+    filter: blur(0);
+}
+
+.heart-icon {
+    display: block;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 50px;
+    text-align: center;
+    text-decoration: wavy;
+    color: crimson;
+    margin-bottom: 20px;
+    animation: heartPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+/* The citation from WhatsApp*/
+.citation {
+    font-size: medium;
+    color:#6a0eac;
+    text-align: center;
+    font-size: clamp(1rem, 2.5vw,1.5rem);
+
+}
+.qotation {
+    color:#9b7ce9;
+    font-size: clamp(1rem, 2.5vw,1.5rem);
+
+}
+/*the cute icon */
+.heart-icon {
+    display: block;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 50px;
+    text-align: center;
+    text-decoration: wavy;
+    color: crimson;
+    margin-bottom: 20px;
+}
+/* THe Heading style */
+h1 {
+    color: #ff0080;
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+/* the second Heading */
+h2 {
+    color: #9b7ce9;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: auto;
+}
+/* Letter paragraph */
+.letter-text {
+    color: rgb(230, 74, 152);
+    font-size: clamp(1rem, 2.5vw,1.5rem);
+    line-height: 1.0;
+    margin-bottom: 15px;
+    text-indent: 11px;
+}
+/*carousel like animation*/
+.carousel {
+    margin: auto;
+    width: 90%;
+    overflow: hidden;
+    position: relative;
+    padding: 0.5em 0;
+}
+
+.carousel-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 18s linear infinite;
+}
+
+/*the group of the items*/
+.group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    flex-shrink: 0;
+    padding-right: 1em;
+}
+
+/* the items in the carousel animation*/
+.card {
+    flex: 0 0 5.5em;
+    height: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #efd3e4;
+    font-size: 2.7rem;
+    border-radius: 10px;
+    line-height: 1;
+}
+
+/*animation itself*/
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+/* The signature styling*/
+.signature {
+    margin-top: 30px;
+    font-style: italic;
+    color: #fd0061;
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+    font-size: clamp(1rem, 2.5vw,1.5rem);
+}
+/* The note styling*/
+.note {
+    margin-top: 10px;
+    font-style: italic;
+    color: #000000;
+    text-align: center;
+    font-size: 10px;
+}
+/*ragebait(?) button */
+.celebrate-link {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+}
+/* quiz styling*/
+.friendship-quiz {
+    margin-top: 34px;
+    padding: 28px 22px 24px;
+    border: 2px solid #ff0166;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0);
+}
+/* the button quiz styling */
+.friendship-quiz button {
+    transform: translateY(10px);
+    gap: 20px;
+    border: royalblue;
+    border-radius: 999px;
+    scale: 150%;
+    background: #ff5dc47b;
+    color: #fff8fd;
+    cursor: pointer;
+}
+/* quiz head*/
+.friendship-quiz-kicker {
+    margin: 0 0 8px;
+    color: #ff98e3;
+    font-size: 0.95rem;
+    font-weight: 650;
+    font-style: oblique;
+}
+/* question count */
+.question-count {
+    margin: 0 0 8px;
+    color: #ff4dd0;
+    font-size: 0.95rem;
+    font-weight: 650;
+    font-style: oblique;
+}
+/* question text */
+.friendship-quiz-intro {
+    margin: 8px 0 24px;
+    color: #6a0eac;
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+}
+/* questions */
+fieldset {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    transition: transform background-color 5ms ease;
+}
+/* question legend */
+legend {
+    margin: 14px;
+    color:#5b176f;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+/* option styling*/
+fieldset label {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 14px;
+    border: 0px;
+    border-radius: 999px;
+    background: #ff5dc4;
+    color:#ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 160ms ease, transform 160ms ease;
+}
+/*hovering the options*/
+fieldset label:hover {
+    background-color: #ff9ec5;
+    color: #844c95;
+    transform: translateY(-4px);
+}
+/*fuck is a quiz button focus?*/ 
+.quiz-button:focus-visible {
+    background-color: #ff0004;
+    transform: translateY(-20px);
+}
+.result-heart {
+    font-size: 2.5rem;
+}
+/* image animation css*/
+.friendship-quiz-result img {
+    display: block;
+    margin: 0 auto 12px;
+    width: 110px;
+    height: 110px;
+    animation: prize-float 2.1s ease-in-out infinite;
+    filter: drop-shadow(0 10px 18px rgba(162, 92, 255, 0.35));
+}
+/* image animation keyframes */
+@keyframes prize-float {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-8px) scale(1.04);
+    }
+}
+/*results*/
+.friendship-quiz-result h3 {
+    margin: 0;
+    color: #5b176f;
+}
+/*another button, this one's invisible, almost*/
+.invisible-button {
+    position: fixed;
+    opacity: 0.1;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    padding: 10px 16px;
+    border: 2px solid #9b7ce9;
+    border-radius: 999px;
+    background: #efd3e4;
+    color: #6a0eac;
+    font: inherit;
+    font-weight: 700;
+    box-shadow: 0 6px 16px rgba(106, 14, 172, 0.25);
+    cursor: not-allowed;
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.invisible-button:hover,
+.invisible-button:focus-visible {
+    background: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 9px 20px rgba(106, 14, 172, 0.35);
+}
+
+@media (max-width: 640px) {
+    .invisible-button {
+        top: 12px;
+        left: 12px;
+    }
+}
