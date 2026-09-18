@@ -47,9 +47,8 @@ body{
 /* The letter container card*/
 .letter-container{
     position: relative;
-    opacity: 0.1;
     z-index: 1;
-    background: rgba(239, 211, 228, 0.75);
+    background: rgba(239, 211, 228, 0.9);
     max-width: 600px;
     width: 100%;
     padding: 40px;
@@ -174,7 +173,8 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #efd3e4;
+    opacity: 1;
+    background-color: rgba(239, 211, 228, 0.75);
     font-size: 2.7rem;
     border-radius: 10px;
     line-height: 1;
