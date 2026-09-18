@@ -1,15 +1,12 @@
 const button = document.getElementById('reveal-button');
     const message = document.getElementById('hidden-message');
 
-        document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".reveal").forEach((element) => {
-            element.classList.add("is-visible");
+    if (button && message) {
+        button.addEventListener('click',() => {
+            message.hidden = !message.hidden;
         });
-    });
-    button.addEventListener('click',() => {
-        message.hidden = !message.hidden;
 
-    });
+    }
 
     const revealElements = document.querySelectorAll('.reveal');
     const container = document.querySelector('.letter-container');
@@ -59,6 +56,11 @@ const button = document.getElementById('reveal-button');
         }
     }
 // I'm not sure if it is going to work actually
+document.addEventListener("DOMContentLoaded", () => {
+document.querySelectorAll(".reveal").forEach((element) => {
+    element.classList.add("is-visible");
+});
+    });
 const questions = Array.from(document.querySelectorAll('.friendship-quiz-question'));
     const nextButton = document.getElementById('next-button');
     const form = document.getElementById('friendship-form');
