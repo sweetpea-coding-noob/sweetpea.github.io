@@ -61,12 +61,13 @@ body{
 }
 
 .letter-container.is-visible {
-    opacity: 0.75;
+    opacity: 1;
     transform: translateY(0) scale(1);
 }
 
 .reveal {
     opacity: 0;
+    visibility: visible;
     transform: translateY(18px) rotate(1deg);
     filter: blur(4px);
     transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
@@ -108,12 +109,18 @@ body{
     font-size: clamp(1rem, 2.5vw,1.5rem);
 
 }
+#hidden-message {
+    display: block;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #291642;
+    font-weight: lighter;
+    text-align: center;
+}
 /*the cute icon */
 .heart-icon {
     display: block;
     border: 0;
     background: transparent;
-    cursor: pointer;
     font-size: 50px;
     text-align: center;
     text-decoration: wavy;

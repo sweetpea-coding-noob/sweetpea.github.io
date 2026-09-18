@@ -1,6 +1,11 @@
 const button = document.getElementById('reveal-button');
     const message = document.getElementById('hidden-message');
 
+        document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".reveal").forEach((element) => {
+            element.classList.add("is-visible");
+        });
+    });
     button.addEventListener('click',() => {
         message.hidden = !message.hidden;
 
