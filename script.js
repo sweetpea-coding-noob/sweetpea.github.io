@@ -55,61 +55,6 @@ const button = document.getElementById('reveal-button');
             heartsContainer.appendChild(heart);
         }
     }
-
-    const bouquetScene = document.createElement('div');
-    bouquetScene.className = 'bouquet-scene';
-    bouquetScene.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(bouquetScene);
-
-    const bouquet = document.createElement('div');
-    bouquet.className = 'bouquet-wrap';
-    bouquetScene.appendChild(bouquet);
-
-    const flowerPalette = [
-        { petal: '#f7bfd8', core: '#ffe29c', leaf: '#7aa573' },
-        { petal: '#d9c3ff', core: '#ffd9ef', leaf: '#86b38a' },
-        { petal: '#f7b5d2', core: '#ffebba', leaf: '#7da785' },
-        { petal: '#f1d9ff', core: '#ffe29c', leaf: '#709b72' }
-    ];
-
-    flowerPalette.forEach((flowerData, index) => {
-        const stem = document.createElement('div');
-        stem.className = 'stem';
-        stem.style.left = `${34 + index * 22}%`;
-        stem.style.height = `${110 + index * 18}px`;
-        stem.style.animationDelay = `${index * 0.3}s`;
-
-        const leaf = document.createElement('div');
-        leaf.className = 'leaf';
-        leaf.style.left = `${38 + index * 22}%`;
-        leaf.style.bottom = `${34 + index * 18}px`;
-        leaf.style.transform = index % 2 === 0 ? 'rotate(-18deg)' : 'rotate(18deg)';
-        leaf.style.animationDelay = `${index * 0.4}s`;
-
-        const flower = document.createElement('div');
-        flower.className = 'flower';
-        flower.style.left = `${26 + index * 22}%`;
-        flower.style.bottom = `${95 + index * 18}px`;
-        flower.style.setProperty('--petal-color', flowerData.petal);
-        flower.style.setProperty('--core-color', flowerData.core);
-
-        for (let petalIndex = 0; petalIndex < 7; petalIndex += 1) {
-            const petal = document.createElement('span');
-            petal.className = 'petal';
-            petal.style.transform = `rotate(${petalIndex * (360 / 7)}deg) translateY(-18px)`;
-            petal.style.animationDelay = `${petalIndex * 0.12}s`;
-            flower.appendChild(petal);
-        }
-
-        const core = document.createElement('span');
-        core.className = 'core';
-        flower.appendChild(core);
-
-        bouquet.appendChild(stem);
-        bouquet.appendChild(leaf);
-        bouquet.appendChild(flower);
-    });
-
 // I'm not sure if it is going to work actually
 document.addEventListener("DOMContentLoaded", () => {
 document.querySelectorAll(".reveal").forEach((element) => {

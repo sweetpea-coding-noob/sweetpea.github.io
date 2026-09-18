@@ -18,10 +18,56 @@
             overflow-x: hidden;
         }
 
+        .sakura-layer {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .petal {
+            position: absolute;
+            top: -12%;
+            left: 0;
+            width: 14px;
+            height: 20px;
+            background: linear-gradient(135deg, #ffd7e8 0%, #ffc0d9 30%, #f9a8c7 100%);
+            border-radius: 65% 0 65% 0;
+            transform-origin: center;
+            opacity: 0;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+            animation: sakuraFall var(--duration) linear infinite;
+            animation-delay: var(--delay);
+        }
+
+        .petal::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0));
+            border-radius: inherit;
+            transform: rotate(18deg);
+        }
+
+        @keyframes sakuraFall {
+            0% {
+                transform: translate3d(0, 0, 0) rotate(0deg) scale(0.7);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.85;
+            }
+            100% {
+                transform: translate3d(var(--drift-x), 110vh, 0) rotate(var(--spin)) scale(1.2);
+                opacity: 0;
+            }
+        }
+
         .letter-container {
             position: relative;
             z-index: 1;
-            background: rgba(239, 211, 228, 0.9);
+            background: rgba(239, 211, 228, 0.5);
             max-width: 600px;
             width: 100%;
             padding: 40px;
@@ -49,11 +95,9 @@
             text-align: center;
         }
     </style>
-    <script>
-        
-    </script>
 </head>
 <body>
+    <div class="sakura-layer" id="sakura-layer" aria-hidden="true"></div>
     
     <div class="letter-container">
         <h1> Hidden letter.?</h1>
@@ -70,5 +114,35 @@
             </p>
         </div>
     </div>
+
+    <script>
+        const sakuraLayer = document.getElementById('sakura-layer');
+
+        if (sakuraLayer) {
+            const petalCount = 30;
+
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('span');
+                petal.className = 'petal';
+
+                const size = 10 + Math.random() * 18;
+                const left = Math.random() * 100;
+                const driftX = (Math.random() - 0.5) * 220;
+                const duration = 9 + Math.random() * 12;
+                const delay = -Math.random() * 14;
+                const spin = (Math.random() - 0.5) * 520;
+
+                petal.style.left = `${left}%`;
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size * 1.5}px`;
+                petal.style.setProperty('--duration', `${duration}s`);
+                petal.style.setProperty('--delay', `${delay}s`);
+                petal.style.setProperty('--drift-x', `${driftX}px`);
+                petal.style.setProperty('--spin', `${spin}deg`);
+
+                sakuraLayer.appendChild(petal);
+            }
+        }
+    </script>
 </body>
 </html>
